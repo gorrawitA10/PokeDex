@@ -1,0 +1,12 @@
+.fixed-size {
+  width: 200px;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.border-con {
+  border-radius: 10px;
+}
