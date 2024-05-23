@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Pokemon } from "../model/pokeData/pokeData";
+import { Pokemon, Ability, Move } from "../model/pokeData/pokeData";
 
 const fetchPokemons = async () => {
   try {
@@ -18,4 +18,34 @@ const fetchPokemons = async () => {
   }
 };
 
-export { fetchPokemons };
+const fetchAbilities = async (pokemonName: string): Promise<Ability[]> => {
+  try {
+    const response = await axios.get(
+      `https://pokeapi.co/api/v2/pokemon/${pokemonName}`
+    );
+    const abilities = response.data.abilities;
+    return abilities.map((ability: { ability: { name: string } }) => ({
+      name: ability.ability.name,
+    }));
+  } catch (error) {
+    console.error(`Error fetching abilities for ${pokemonName}:`, error);
+    return [];
+  }
+};
+
+const fetchPokemonMoves = async (pokemonName: string): Promise<Move[]> => {
+  try {
+    const response = await axios.get(
+      `https://pokeapi.co/api/v2/pokemon/${pokemonName}`
+    );
+    const moves = response.data.moves;
+    return moves.map((move: { move: { name: string } }) => ({
+      name: move.move.name,
+    }));
+  } catch (error) {
+    console.error(`Error fetching moves for ${pokemonName}:`, error);
+    return [];
+  }
+};
+
+export { fetchPokemons, fetchAbilities, fetchPokemonMoves };

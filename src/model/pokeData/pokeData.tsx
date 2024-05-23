@@ -28,3 +28,10 @@ export interface Pokemon {
     };
   }[];
 }
+export interface Ability {
+  name: string;
+}
+
+export interface Move {
+  name: string;
+}
