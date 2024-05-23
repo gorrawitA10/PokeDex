@@ -10,3 +10,78 @@
 .border-con {
   border-radius: 10px;
 }
+.fixed-size {
+  height: 200px;
+  width: 150px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.2s, background-color 0.2s;
+}
+
+.fixed-size:hover {
+  transform: scale(1.05);
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+.border-con {
+  border: 2px solid #ddd;
+}
+
+.table-striped {
+  width: 100%;
+  margin-top: 10px;
+  border-collapse: collapse;
+}
+
+.table-striped td {
+  padding: 8px;
+  border: 1px solid #ddd;
+}
+
+.modal-body ul {
+  list-style: none;
+  padding: 0;
+}
+
+.modal-body ul li {
+  background-color: #f9f9f9;
+  margin: 5px 0;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.modal-body strong {
+  display: block;
+  margin-top: 10px;
+}
+
+.modal-body table {
+  margin-top: 10px;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.modal-body table td {
+  padding: 8px;
+  border: 1px solid #ddd;
+}
+.li-li {
+  overflow: overlay;
+  height: 300px;
+}
+/* mainStyle.css */
+.border-con {
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.fixed-size {
+  height: 200px;
+  width: 150px;
+}
+
+.ability-list,
+.move-list {
+  max-height: 200px;
+  overflow-y: auto;
+}

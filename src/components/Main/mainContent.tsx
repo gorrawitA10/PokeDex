@@ -7,9 +7,20 @@ import {
   Button,
   Modal,
   Pagination,
+  Tab,
+  Tabs,
 } from "react-bootstrap";
-import { fetchPokemons } from "../../service/poke";
-import { Pokemon, ElementIcons } from "../../model/pokeData/pokeData";
+import {
+  fetchPokemons,
+  fetchAbilities,
+  fetchPokemonMoves,
+} from "../../service/poke";
+import {
+  Pokemon,
+  ElementIcons,
+  Ability,
+  Move,
+} from "../../model/pokeData/pokeData";
 import "./mainStyle.css";
 
 const ITEMS_PER_PAGE = 18;
@@ -34,6 +45,7 @@ const typeColors: { [key: string]: string } = {
   steel: "#B8B8D0",
   fairy: "#EE99AC",
 };
+
 const elementIcons: ElementIcons = {
   normal: "🔘",
   fire: "🔥",
@@ -54,6 +66,7 @@ const elementIcons: ElementIcons = {
   steel: "🔩",
   fairy: "🧚",
 };
+
 function MainContent() {
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -62,6 +75,8 @@ function MainContent() {
   const [selectedType, setSelectedType] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [currentPageInput, setCurrentPageInput] = useState<number>(currentPage);
+  const [abilities, setAbilities] = useState<Ability[]>([]);
+  const [moves, setMoves] = useState<Move[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -89,8 +104,12 @@ function MainContent() {
     setHoveredPokemon(null);
   };
 
-  const handlePokemonClick = (pokemon: Pokemon) => {
+  const handlePokemonClick = async (pokemon: Pokemon) => {
     setSelectedPokemon(pokemon);
+    const abilities = await fetchAbilities(pokemon.name);
+    setAbilities(abilities);
+    const moves = await fetchPokemonMoves(pokemon.name);
+    setMoves(moves);
   };
 
   const handleTypeClick = (type: string | null) => {
@@ -144,6 +163,7 @@ function MainContent() {
       <Modal
         show={selectedPokemon !== null}
         onHide={() => setSelectedPokemon(null)}
+        size="lg"
       >
         {selectedPokemon && (
           <>
@@ -151,7 +171,7 @@ function MainContent() {
               <Modal.Title>{selectedPokemon.name}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <div className="d-flex justify-content-center">
+              <div className="d-flex justify-content-center mb-3">
                 <img
                   src={
                     selectedPokemon.sprites.other["official-artwork"]
@@ -165,29 +185,53 @@ function MainContent() {
                   }}
                 />
               </div>
-              <div>
-                <strong>Type: </strong>
-                {selectedPokemon.types.map((type, index) => (
-                  <span key={index} style={{ fontSize: "1.5rem" }}>
-                    {elementIcons[type.type.name]}
-                  </span>
-                ))}
-              </div>
-              <div>
-                <strong>Abilities: </strong>
-                {selectedPokemon.abilities.map((ability, index) => (
-                  <span key={index}>{ability.ability.name}</span>
-                ))}
-              </div>
-              <div>
-                <strong>Base Stats</strong>
-                {selectedPokemon.stats.map((stat, index) => (
-                  <div key={index}>
-                    <span>{stat.stat.name}: </span>
-                    <span>{stat.base_stat}</span>
+              <Tabs defaultActiveKey="types" id="pokemon-details-tabs">
+                <Tab eventKey="types" title="Types">
+                  <div>
+                    <strong>Types: </strong>
+                    {selectedPokemon.types.map((type, index) => (
+                      <span key={index} style={{ fontSize: "1.5rem" }}>
+                        {elementIcons[type.type.name]}
+                      </span>
+                    ))}
                   </div>
-                ))}
-              </div>
+                </Tab>
+                <Tab eventKey="abilities" title="Abilities">
+                  <div>
+                    <strong>Abilities: </strong>
+                    <ul>
+                      {abilities.map((ability, index) => (
+                        <li key={index}>{ability.name}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </Tab>
+                <Tab eventKey="moves" title="Moves">
+                  <div style={{ maxHeight: "300px", overflowY: "auto" }}>
+                    <strong>Moves: </strong>
+                    <ul>
+                      {moves.map((move, index) => (
+                        <li key={index}>{move.name}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </Tab>
+                <Tab eventKey="stats" title="Stats">
+                  <div>
+                    <strong>Base Stats:</strong>
+                    <table className="table table-striped">
+                      <tbody>
+                        {selectedPokemon.stats.map((stat, index) => (
+                          <tr key={index}>
+                            <td>{stat.stat.name}</td>
+                            <td>{stat.base_stat}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </Tab>
+              </Tabs>
             </Modal.Body>
           </>
         )}
@@ -220,26 +264,6 @@ function MainContent() {
             ))}
           </Form.Select>
         </Form>
-        {/* <div className="d-flex mb-3 gap-3">
-          <Button
-            variant="secondary"
-            className="circular-button"
-            onClick={() => handleTypeClick(null)}
-          >
-            Show All
-          </Button>
-          {Object.keys(elementIcons).map((type) => (
-            <Button
-              key={type}
-              variant="primary"
-              className="circular-button"
-              onClick={() => handleTypeClick(type)}
-              style={{ backgroundColor: typeColors[type] }}
-            >
-              {elementIcons[type]}
-            </Button>
-          ))}
-        </div> */}
         {[...Array(Math.ceil(displayedPokemons.length / 6))].map(
           (_, rowIndex) => (
             <Row key={rowIndex} className="mb-3 gap-3">
