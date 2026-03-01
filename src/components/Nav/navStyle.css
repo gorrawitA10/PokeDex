@@ -1,4 +1,93 @@
-.test {
-  width: 60%;
-  border-radius: 10px;
+.app-nav {
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.04);
+}
+
+.app-nav__inner {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.app-nav__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 900;
+  letter-spacing: 0.2px;
+  text-decoration: none;
+}
+
+.brand-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #ff3d3d, #ffcc00);
+  box-shadow: 0 6px 14px rgba(255, 61, 61, 0.25);
+}
+
+.brand-text {
+  font-size: 16px;
+}
+
+.app-nav__toggle {
+  border-radius: 12px;
+}
+
+.app-nav__links {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.app-link {
+  border-radius: 999px;
+  padding: 8px 12px !important;
+  font-weight: 700;
+  color: rgba(0, 0, 0, 0.75) !important;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.app-link:hover {
+  background: rgba(0, 0, 0, 0.06);
+  color: rgba(0, 0, 0, 0.9) !important;
+}
+
+.app-dropdown .dropdown-toggle {
+  border-radius: 999px !important;
+  padding: 8px 12px !important;
+  font-weight: 800;
+}
+
+.app-offcanvas {
+  width: min(360px, 90vw);
+}
+
+.app-offcanvas__header {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.app-offcanvas__title {
+  font-weight: 900;
+}
+
+.app-offcanvas__body {
+  padding-top: 14px;
+}
+
+@media (max-width: 768px) {
+  .app-nav__links {
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .app-link {
+    padding: 12px 14px !important;
+  }
+
+  .app-dropdown .dropdown-menu {
+    border-radius: 14px;
+    overflow: hidden;
+  }
 }
